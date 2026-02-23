@@ -171,13 +171,13 @@ The Maven Wrapper is a handy tool that ensures everyone working on the project u
 
 4. **Verify Setup**
 
-   **On Windows**:
+   **On Windows (PowerShell)**:
 
    ```cmd
    mvnw.cmd compile
    ```
 
-   **On Mac/Linux**:
+   **On Mac/Linux (Bash/zsh)**:
 
    ```bash
    ./mvnw compile
