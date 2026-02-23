@@ -1,6 +1,6 @@
 # Student CRUD API - Spring Boot Demo
 
-A comprehensive RESTful API for managing student records, built with Spring Boot, Spring Data JPA, and PostgreSQL. This project demonstrates fundamental concepts for building APIs with Spring Boot, making it ideal for students learning backend development.
+A comprehensive RESTful API for managing student records, built with Spring Boot, Spring Data JPA, and PostgreSQL. This project demonstrates fundamental concepts for building APIs with Spring Boot.
 
 ## Table of Contents
 
@@ -17,7 +17,7 @@ A comprehensive RESTful API for managing student records, built with Spring Boot
 
 ## What is This Project?
 
-This is a **CRUD API** (Create, Read, Update, Delete) that manages student records. It's a great learning project because it demonstrates:
+This is a **CRUD API** (Create, Read, Update, Delete) that manages student records. It demonstrates:
 
 - How to build a REST API with Spring Boot
 - How to connect to a PostgreSQL database using JPA
@@ -281,7 +281,7 @@ This project follows a three-tier architecture pattern:
 │    Controller Layer                 │
 │  (StudentApiController)             │
 │  - Handles HTTP requests/responses  │
-│  - Maps URLs to methods             │
+│  - Maps URLs to methods(endpoints)  │
 └────────────────┬────────────────────┘
                  │
 ┌────────────────▼────────────────────┐
