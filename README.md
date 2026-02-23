@@ -114,7 +114,7 @@ The Maven Wrapper is a handy tool that ensures everyone working on the project u
    #### Step 1: Get Your Neon.tech Connection String
 
    1. Navigate to [Neon.tech](https://neon.tech)
-   2. Sign in to your account (or contact your instructor for connection details)
+   2. Sign in to your account
    3. In your project dashboard, find your connection string
    4. It will look like: `postgresql://username:password@host:5432/dbname`
 
