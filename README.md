@@ -65,9 +65,11 @@ Before you begin, ensure you have installed:
    - Download from [Oracle Java](https://www.oracle.com/java/technologies/downloads/) or use a package manager
    - Verify installation: `java -version`
 
-2. **PostgreSQL Database**
-   - Download from [PostgreSQL Official Site](https://www.postgresql.org/download/)
-   - The credentials are already configured in `application.properties`
+2. **Neon.tech PostgreSQL Database** (Cloud-based, Serverless)
+   - This project uses [Neon.tech](https://neon.tech), a serverless PostgreSQL database in the cloud
+   - You don't need to install PostgreSQL locally
+   - Sign up for a free account at [Neon.tech](https://neon.tech) or contact your instructor for connection credentials
+   - You only need an internet connection to connect to the database
 
 3. **Git** (optional, for cloning the project)
    - Download from [Git Official Site](https://git-scm.com/)
@@ -107,9 +109,16 @@ The Maven Wrapper is a handy tool that ensures everyone working on the project u
    - `install`: Downloads all dependencies and compiles the project
    - First run may take a few minutes as Maven is downloaded
 
-3. **Database Configuration**
+3. **Database Configuration (Neon.tech Serverless PostgreSQL)**
 
-   #### Step 1: Stop Tracking `application.properties` Locally
+   #### Step 1: Get Your Neon.tech Connection String
+
+   1. Navigate to [Neon.tech](https://neon.tech)
+   2. Sign in to your account (or contact your instructor for connection details)
+   3. In your project dashboard, find your connection string
+   4. It will look like: `postgresql://username:password@host:5432/dbname`
+
+   #### Step 2: Stop Tracking `application.properties` Locally
 
    To prevent accidentally committing your database credentials to Git, use `git skip-worktree` to exclude your local copy:
 
@@ -119,15 +128,15 @@ The Maven Wrapper is a handy tool that ensures everyone working on the project u
 
    This tells Git to ignore any changes you make to this file locally. You can now safely edit the file without worrying about committing sensitive data.
 
-   #### Step 2: Update Your Connection String
+   #### Step 3: Update Your Connection String
 
-   Edit `src/main/resources/application.properties` and add your PostgreSQL database connection string:
+   Edit `src/main/resources/application.properties` and add your Neon.tech PostgreSQL connection string:
 
    ```properties
    spring.application.name=crud-api
-   spring.datasource.url=jdbc:postgresql://your-host:your-port/your-database
-   spring.datasource.username=your_username
-   spring.datasource.password=your_password
+   spring.datasource.url=jdbc:postgresql://host:5432/dbname
+   spring.datasource.username=your_neon_username
+   spring.datasource.password=your_neon_password
    spring.jpa.hibernate.ddl-auto=update
 
    #Log out sql queries
@@ -136,17 +145,18 @@ The Maven Wrapper is a handy tool that ensures everyone working on the project u
    logging.level.org.hibernate.orm.jdbc.bind=TRACE
    ```
 
-   Replace:
-   - `your-host`: Database server hostname
-   - `your-port`: Database port (usually 5432 for PostgreSQL)
-   - `your-database`: Database name
-   - `your_username`: Database username
-   - `your_password`: Database password
+   Replace with your actual Neon.tech credentials:
+   - `host`: Your Neon.tech host (e.g., `some-cool-projectName-pooler.c-7.us-east-1.aws.neon.tech`)
+   - `dbname`: Your database name (usually `neondb`)
+   - `your_neon_username`: Your Neon.tech username
+   - `your_neon_password`: Your Neon.tech password
 
    #### Example Connection String
 
    ```properties
-   spring.datasource.url=jdbc:postgresql://some-project-name.c-7.us-east-1.aws.neon.tech/neondb?user=neondb_owner&password=your_password
+   spring.datasource.url=jdbc:postgresql://ep-cool-cherry-ai9ih0ua-pooler.c-7.us-east-1.aws.neon.tech:5432/neondb
+   spring.datasource.username=neondb_owner
+   spring.datasource.password=your_password_here
    ```
 
    #### To Resume Tracking the File
@@ -798,7 +808,11 @@ Then access the API at `http://localhost:8081/api/students/`
 
 ### Issue: "Connection refused" when accessing database
 
-**Solution**: Ensure you have internet access and the PostgreSQL database is running. Check the connection string in `application.properties`.
+**Solution**:
+- Ensure you have **internet access** to connect to Neon.tech (the database is cloud-based and always running)
+- Verify your connection string is correct in `application.properties`
+- Check that your username and password from Neon.tech are correct
+- Make sure the host/endpoint is reachable (not blocked by firewall)
 
 ### Issue: Getting 404 errors
 
