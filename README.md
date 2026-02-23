@@ -68,7 +68,7 @@ Before you begin, ensure you have installed:
 2. **Neon.tech PostgreSQL Database** (Cloud-based, Serverless)
    - This project uses [Neon.tech](https://neon.tech), a serverless PostgreSQL database in the cloud
    - You don't need to install PostgreSQL locally
-   - Sign up for a free account at [Neon.tech](https://neon.tech) or contact your instructor for connection credentials
+   - Sign up for a free account at [Neon.tech](https://neon.tech)
    - You only need an internet connection to connect to the database
 
 3. **Git** (optional, for cloning the project)
