@@ -13,16 +13,16 @@ public class Student {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  public Long studentId;
+  private Long studentId;
 
   @Column(nullable = false)
   public String name;
 
   @Column(nullable = false, unique = true)
-  public String email;
+  private String email;
 
-  public String major;
-  public double gpa;
+  private String major;
+  private double gpa;
 
   public Student() {
   }
