@@ -60,7 +60,6 @@ public class StudentApiController {
    */
   @PostMapping("/")
   public ResponseEntity<Student> createStudent(@RequestBody Student student) {
-    System.out.println("Received student: " + student);
     Student createdStudent = studentService.createStudent(student);
     if (createdStudent != null) {
       return ResponseEntity.ok(createdStudent);
