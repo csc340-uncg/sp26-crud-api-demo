@@ -12,12 +12,12 @@ import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
 public class StudentRepositoryTests {
   @Autowired
   private StudentRepository studentRepository;
-  Student student1;
-  Student student2;
-  Student student3;
+  private Student student1;
+  private Student student2;
+  private Student student3;
 
   @BeforeEach
-  void setUp() {
+ public void setUp() {
     student1 = new Student("Alice Smith", "alice@school.edu", "CSC", 3.8);
     student2 = new Student("Bob Johnson", "bob@school.edu", "MAT", 3.5);
     student3 = new Student("Charlie Brown", "charlie@school.edu", "CSC", 3.2);
