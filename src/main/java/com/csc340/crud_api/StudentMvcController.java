@@ -76,4 +76,14 @@ public class StudentMvcController {
     return "redirect:/students/" + newStudent.getStudentId();
   }
 
+  @PostMapping("/update/{id}")
+  public String updateStudent(@PathVariable Long id, Student updatedStudent) {
+    Student student = studentService.updateStudent(id, updatedStudent);
+    if (student != null) {
+      return "redirect:/students/" + student.getStudentId();
+    } else {
+      return "redirect:/students/update/" + id + "?error=true";
+    }
+  }
+
 }
