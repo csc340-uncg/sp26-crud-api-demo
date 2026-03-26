@@ -41,7 +41,7 @@
       <#list studentsList as student>
         <div class="col">
           <div class="card shadow-sm" style="margin-bottom: 15px;">
-            <img src="/profile-pictures/${(student.profilePicturePath)!'avatar.png'}" class="card-img-top" alt="...">
+            <img src="/profile-pictures/${(student.profilePicturePath)!'avatar.png'}" class="card-img-top" alt="Profile Picture" style="height: 200px; object-fit: cover;">
             <div class="card-body">
               <h5 class="card-title">${student.name}</h5>
               <a href="/students/major/${student.major}" class="card-link">${student.major}</a>
