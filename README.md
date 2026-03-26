@@ -1,6 +1,6 @@
-# Student CRUD API - Spring Boot Demo
+# Student CRUD MVC Application - Spring Boot Demo
 
-A comprehensive RESTful API for managing student records, built with Spring Boot, Spring Data JPA, and PostgreSQL. This project demonstrates fundamental concepts for building APIs with Spring Boot.
+A comprehensive MVC application for managing student records, built with Spring Boot, Spring Data JPA, and PostgreSQL. This project demonstrates fundamental concepts for building both REST APIs and web interfaces with Spring Boot.
 
 ## Table of Contents
 
@@ -10,6 +10,7 @@ A comprehensive RESTful API for managing student records, built with Spring Boot
 - [Running the Application](#running-the-application)
 - [Project Architecture](#project-architecture)
 - [API Endpoints](#api-endpoints)
+- [Web UI Routes](#web-ui-routes)
 - [Key Spring Boot Concepts](#key-spring-boot-concepts)
 - [Database Schema](#database-schema)
 
@@ -17,12 +18,14 @@ A comprehensive RESTful API for managing student records, built with Spring Boot
 
 ## What is This Project?
 
-This is a **CRUD API** (Create, Read, Update, Delete) that manages student records. It demonstrates:
+This is a **CRUD MVC Application** (Create, Read, Update, Delete) that manages student records. It demonstrates:
 
 - How to build a REST API with Spring Boot
+- How to build a web interface using Spring MVC
 - How to connect to a PostgreSQL database using JPA
 - How to structure a Spring Boot application with layers (Controller, Service, Repository)
 - How to handle HTTP requests and responses
+- How to render web pages with FreeMarker templates
 - How to perform database operations
 
 **CRUD** stands for:
@@ -32,6 +35,8 @@ This is a **CRUD API** (Create, Read, Update, Delete) that manages student recor
 - **U**pdate - Modify existing student records
 - **D**elete - Remove student records
 
+The application provides both a **REST API** for programmatic access and a **web interface** for user interaction.
+
 ---
 
 ## Technology Stack
@@ -40,6 +45,8 @@ This is a **CRUD API** (Create, Read, Update, Delete) that manages student recor
 | ------------------- | ------- | -------------------------------------- |
 | **Java**            | 25      | Programming language                   |
 | **Spring Boot**     | 4.0.3   | Framework for building the application |
+| **Spring MVC**      | Latest  | Web framework for handling requests    |
+| **FreeMarker**      | Latest  | Template engine for web views          |
 | **Spring Data JPA** | Latest  | ORM layer for database access          |
 | **Hibernate**       | Latest  | JPA implementation                     |
 | **PostgreSQL**      | Latest  | Relational database                    |
@@ -55,7 +62,9 @@ This is a **CRUD API** (Create, Read, Update, Delete) that manages student recor
 
 **spring-boot-starter-data-jpa**: Provides Spring Data JPA for simplified database access through repositories and automatic query generation.
 
-**spring-boot-starter-webmvc**: Provides Spring Web MVC for building REST APIs with annotations like `@Controller`, `@GetMapping`, etc.
+**spring-boot-starter-web**: Provides Spring Web MVC for building both REST APIs and web applications with annotations like `@Controller`, `@GetMapping`, etc.
+
+**spring-boot-starter-freemarker**: Provides FreeMarker template engine for rendering dynamic web pages.
 
 **postgresql**: JDBC driver to connect to PostgreSQL database.
 
@@ -265,29 +274,36 @@ Press `Ctrl+C` in your terminal to stop the running application. If using IDE GU
 ```
 src/main/java/com/csc340/crud_api/
 ├── CrudApiApplication.java          # Entry point of the application
-├── StudentApiController.java         # Handles HTTP requests
+├── StudentApiController.java         # REST API controller for JSON responses
+├── StudentUiController.java          # Web UI controller for HTML views
 ├── StudentService.java               # Business logic layer
 ├── StudentRepository.java            # Database access layer
 └── Student.java                      # Entity/Model class
 
 src/main/resources/
-└── application.properties             # Configuration file
+├── application.properties             # Configuration file
+└── templates/                        # FreeMarker HTML templates
+    ├── student-details.ftlh
+    ├── student-form.ftlh
+    └── students-list.ftlh
 ```
 
-### Architectural Pattern: **Layered Architecture**
+### Architectural Pattern: **MVC (Model-View-Controller)**
 
-This project follows a three-tier architecture pattern:
+This project follows the MVC architectural pattern with layered architecture:
 
 ```
 ┌─────────────────────────────────────┐
-│   HTTP Client (REST Client, Browser)│
+│   HTTP Client (Browser/API Client)  │
 └────────────────┬────────────────────┘
                  │
 ┌────────────────▼────────────────────┐
 │    Controller Layer                 │
-│  (StudentApiController)             │
-│  - Handles HTTP requests/responses  │
-│  - Maps URLs to methods(endpoints)  │
+│  (StudentApiController &            │
+│   StudentUiController)              │
+│  - Handles HTTP requests            │
+│  - API: Returns JSON responses      │
+│  - UI: Returns view names & models  │
 └────────────────┬────────────────────┘
                  │
 ┌────────────────▼────────────────────┐
@@ -302,6 +318,18 @@ This project follows a three-tier architecture pattern:
 │  (StudentRepository)                │
 │  - Communicates with database       │
 │  - Performs CRUD operations         │
+└────────────────┬────────────────────┘
+                 │
+┌────────────────▼────────────────────┐
+│    Model Layer                      │
+│  (Student Entity)                   │
+│  - Data representation              │
+└────────────────┬────────────────────┘
+                 │
+┌────────────────▼────────────────────┐
+│    View Layer                       │
+│  (FreeMarker Templates)             │
+│  - HTML rendering for web UI        │
 └────────────────┬────────────────────┘
                  │
 ┌────────────────▼────────────────────┐
@@ -662,6 +690,122 @@ curl -X DELETE http://localhost:8080/api/students/1
 
 ---
 
+## Web UI Routes
+
+The application also provides a web interface for user interaction. All web routes use the base URL: `http://localhost:8080/students`
+
+### 1. View All Students
+
+```http
+GET /students/
+```
+
+**Description**: Display a list of all students in a web page.
+
+**Response**: HTML page showing the students list.
+
+### 2. View Student Details
+
+```http
+GET /students/{id}
+```
+
+**Description**: Display detailed information for a specific student.
+
+**Path Parameters**:
+
+- `id` (Long, required): The unique identifier of the student
+
+**Response**: HTML page with student details or error page if not found.
+
+### 3. Add New Student Form
+
+```http
+GET /students/add
+```
+
+**Description**: Display a form to add a new student.
+
+**Response**: HTML form for creating a new student.
+
+### 4. Create Student
+
+```http
+POST /students/
+```
+
+**Description**: Process the form submission to create a new student.
+
+**Form Data**:
+
+- `name` (String, required): Student's full name
+- `email` (String, required, unique): Student's email address
+- `major` (String, optional): Student's major
+- `gpa` (Double, optional): Student's GPA
+- `picture` (File, optional): Profile picture
+
+**Response**: Redirect to the new student's details page.
+
+### 5. Update Student
+
+```http
+POST /students/update/{id}
+```
+
+**Description**: Process the form submission to update an existing student.
+
+**Path Parameters**:
+
+- `id` (Long, required): The ID of the student to update
+
+**Form Data**: Same as create student.
+
+**Response**: Redirect to the updated student's details page.
+
+### 6. Delete Student
+
+```http
+GET /students/delete/{id}
+```
+
+**Description**: Delete a student and redirect to the students list.
+
+**Path Parameters**:
+
+- `id` (Long, required): The ID of the student to delete
+
+**Response**: Redirect to the students list page.
+
+### 7. Search Students
+
+```http
+GET /students/search?name={name}
+```
+
+**Description**: Search for students by name and display results.
+
+**Query Parameters**:
+
+- `name` (String, optional): The name to search for
+
+**Response**: HTML page with search results.
+
+### 8. Filter by Major
+
+```http
+GET /students/major/{major}
+```
+
+**Description**: Display students filtered by major.
+
+**Path Parameters**:
+
+- `major` (String, required): The major to filter by
+
+**Response**: HTML page with filtered students list.
+
+---
+
 ## Key Spring Boot Concepts
 
 ### What is Spring Boot?
@@ -673,16 +817,74 @@ Spring Boot is a framework that simplifies building production-ready Spring appl
 - Convention over configuration - sensible defaults
 - Easy integration with databases and other services
 
+### MVC (Model-View-Controller) Pattern
+
+Spring MVC is a web framework that follows the MVC architectural pattern:
+
+- **Model**: Represents the data (Student entity, service responses)
+- **View**: The presentation layer (FreeMarker templates that render HTML)
+- **Controller**: Handles user requests, processes them, and returns appropriate responses
+
+```java
+@Controller  // For web views
+@RequestMapping("/students")
+public class StudentUiController {
+  @GetMapping("/")
+  public String getAllStudents(Model model) {
+    model.addAttribute("studentsList", studentService.getAllStudents());
+    return "students-list";  // Returns view name
+  }
+}
+
+@RestController  // For API responses
+@RequestMapping("/api/students")
+public class StudentApiController {
+  @GetMapping("/")
+  public ResponseEntity<List<Student>> getAllStudents() {
+    return ResponseEntity.ok(studentService.getAllStudents());
+  }
+}
+```
+
+### @Controller vs @RestController
+
+- `@Controller`: Returns view names (for web pages) and can use Model to pass data to views
+- `@RestController`: Returns data directly (JSON/XML) - equivalent to `@Controller` + `@ResponseBody`
+
+### FreeMarker Templates
+
+FreeMarker is a server-side template engine for web applications:
+
+```html
+<table>
+  <#list studentsList as student>
+  <tr>
+    <td>${student.name}</td>
+    <td>${student.email}</td>
+  </tr>
+  </#list>
+</table>
+```
+
+- `<#list collection as item>`: Iterates over collections
+- `${variable}`: Displays variable content
+- `<#if condition>`: Conditional rendering
+
 ### @Controller and @RequestMapping
 
 ```java
 @Controller
-@RequestMapping("/api/students")
+@RequestMapping("/students")  // Web UI controller
+public class StudentUiController { }
+
+@RestController
+@RequestMapping("/api/students")  // API controller
 public class StudentApiController { }
 ```
 
-- `@Controller`: Tells Spring this class handles HTTP requests
-- `@RequestMapping("/api/students")`: All endpoints in this class start with `/api/students`
+- `@Controller`: Handles web requests, returns view names for HTML rendering
+- `@RestController`: Handles API requests, returns data (JSON) directly
+- `@RequestMapping`: Defines the base URL path for all methods in the controller
 
 ### HTTP Mapping Annotations
 
@@ -788,15 +990,33 @@ CREATE TABLE students (
 
 ---
 
-## Testing the API
+## Testing the API and Web UI
 
-### Using Postman/Echo API/Bruno (GUI)
+### Testing the REST API
+
+#### Using Postman/Echo API/Bruno (GUI)
 
 1. Create a new request
 2. Select HTTP method (GET, POST, PUT, DELETE)
 3. Enter URL (e.g., http://localhost:8080/api/students/)
 4. If POST/PUT, go to "Body" tab → select "raw" and "JSON"
 5. Enter JSON data and click "Send"
+
+### Testing the Web Interface
+
+#### Using a Web Browser
+
+1. Open your web browser
+2. Navigate to `http://localhost:8080/students/`
+3. Use the web interface to:
+   - View all students
+   - Add new students
+   - Update existing students
+   - Delete students
+   - Search by name
+   - Filter by major
+
+The web interface provides a user-friendly way to interact with the student data without needing API tools.
 
 ---
 
