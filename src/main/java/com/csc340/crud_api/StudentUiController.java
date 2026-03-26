@@ -16,7 +16,7 @@ public class StudentUiController {
 
   private final StudentService studentService;
 
-  public StudentMvcController(StudentService studentService) {
+  public StudentUiController(StudentService studentService) {
     this.studentService = studentService;
   }
 
