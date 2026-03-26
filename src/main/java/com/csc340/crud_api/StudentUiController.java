@@ -12,7 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 //@RestController
 @Controller
 @RequestMapping("/students")
-public class StudentMvcController {
+public class StudentUiController {
 
   private final StudentService studentService;
 
