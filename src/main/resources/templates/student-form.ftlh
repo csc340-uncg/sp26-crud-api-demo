@@ -28,39 +28,20 @@
       </li>
     </ul>
   </nav>
-  <!-- End Nav Bar -->
   <div class="container" style="margin-top: 15px;">
     <h1>${title}</h1>
-    <a href="/students/add" class="btn btn-outline-primary" style="float:right;">Create New Student</a>
-
-    <form action="/students/search">
-      <input type="text" name="name" placeholder="Search By Name &#128270;">
+    <form id="new-student" action="/students/" method="post" enctype="multipart/form-data">
+      <input type="text" id="name" name="name" placeholder="Name" />
+      <input type="email" id="email" name="email" placeholder="example@domain.edu" />
+      <input type="text" id="major" name="major" placeholder="Major" />
+      <input type="number" id="gpa" name="gpa" step="0.01" placeholder="GPA" />
+      <input type="file" id="picture" name="picture" required />
+      <button type="submit" class="btn btn-primary">Save</button>
+      <a href="/students" class="btn btn-outline-danger">Cancel</a>
     </form>
 
-    <!-- Students Table -->
-    <table class="table table-striped rounded-3 overflow-hidden">
-      <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Major</th>
-      </tr>
-      <#list studentsList as student>
-        <tr>
-          <td>
-            <a href="/students/${student.studentId?c}" style="color:#000000">${student.studentId?c}</a>
-          </td>
-          <td>${student.name}</td>
-          <td>
-            <a href="/students/major/${student.major}" style="color:#000000">${student.major}</a>
-          </td>
-        </tr>
-      </#list>
-    </table>
-
   </div>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
-    crossorigin="anonymous"></script>
+
 </body>
 
 </html>

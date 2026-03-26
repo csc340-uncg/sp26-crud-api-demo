@@ -4,6 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -57,6 +58,22 @@ public class StudentMvcController {
   public String deleteStudent(@PathVariable Long id) {
     studentService.deleteStudent(id);
     return "redirect:/students/";
+  }
+
+  @GetMapping("/add")
+  public String showAddStudentForm(Model model) {
+    model.addAttribute("student", new Student());
+    model.addAttribute("title", "Add New Student");
+    return "student-form";
+  }
+
+  @PostMapping("/")
+  public String addStudent(Student student) {
+    Student newStudent = studentService.createStudent(student);
+    if (newStudent == null) {
+      return "redirect:/students/add?error=true";
+    }
+    return "redirect:/students/" + newStudent.getStudentId();
   }
 
 }
