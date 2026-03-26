@@ -37,6 +37,21 @@
       <input type="text" name="name" placeholder="Search By Name &#128270;">
     </form>
 
+    <div class="row  row-cols-3">
+      <#list studentsList as student>
+        <div class="col">
+          <div class="card shadow-sm" style="margin-bottom: 15px;">
+            <img src="/profile-pictures/${(student.profilePicturePath)!'avatar.png'}" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">${student.name}</h5>
+              <a href="/students/major/${student.major}" class="card-link">${student.major}</a>
+            </div>
+            <a href="/students/${student.studentId?c}" class="btn btn-sm btn-outline-primary">View Details</a>
+          </div>
+        </div>
+      </#list>
+
+    </div>
     <!-- Students Table -->
     <table class="table table-striped rounded-3 overflow-hidden">
       <tr>

@@ -6,9 +6,15 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "students")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Student {
 
   @Id
@@ -23,62 +29,12 @@ public class Student {
 
   private String major;
   private double gpa;
-
-  public Student() {
-  }
+  private String profilePicturePath;
 
   public Student(String name, String email, String major, double gpa) {
     this.name = name;
     this.email = email;
     this.major = major;
-    this.gpa = gpa;
-  }
-
-  public Student(Long studentId, String name, String email, String major, double gpa) {
-    this.studentId = studentId;
-    this.name = name;
-    this.email = email;
-    this.major = major;
-    this.gpa = gpa;
-  }
-
-  public Long getStudentId() {
-    return studentId;
-  }
-
-  public void setStudentId(Long studentId) {
-    this.studentId = studentId;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public String getEmail() {
-    return email;
-  }
-
-  public void setEmail(String email) {
-    this.email = email;
-  }
-
-  public String getMajor() {
-    return major;
-  }
-
-  public void setMajor(String major) {
-    this.major = major;
-  }
-
-  public double getGpa() {
-    return gpa;
-  }
-
-  public void setGpa(double gpa) {
     this.gpa = gpa;
   }
 

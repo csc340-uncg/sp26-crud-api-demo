@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 //@RestController
 @Controller
@@ -68,18 +69,21 @@ public class StudentMvcController {
   }
 
   @PostMapping("/")
-  public String addStudent(Student student) {
+  public String addStudent(Student student, MultipartFile picture) {
     Student newStudent = studentService.createStudent(student);
-    if (newStudent == null) {
+    if (newStudent != null) {
+      studentService.saveProfilePicture(student, picture);
+      return "redirect:/students/" + newStudent.getStudentId();
+    } else {
       return "redirect:/students/add?error=true";
     }
-    return "redirect:/students/" + newStudent.getStudentId();
   }
 
   @PostMapping("/update/{id}")
-  public String updateStudent(@PathVariable Long id, Student updatedStudent) {
+  public String updateStudent(@PathVariable Long id, Student updatedStudent, MultipartFile picture) {
     Student student = studentService.updateStudent(id, updatedStudent);
     if (student != null) {
+      studentService.saveProfilePicture(student, picture);
       return "redirect:/students/" + student.getStudentId();
     } else {
       return "redirect:/students/update/" + id + "?error=true";
