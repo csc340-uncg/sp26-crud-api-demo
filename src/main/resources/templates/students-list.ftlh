@@ -36,7 +36,7 @@
     <form action="/students/search">
       <input type="text" name="name" placeholder="Search By Name &#128270;">
     </form>
-
+<!-- Students Gallery -->
     <div class="row  row-cols-3">
       <#list studentsList as student>
         <div class="col">
