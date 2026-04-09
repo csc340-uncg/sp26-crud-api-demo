@@ -7,6 +7,8 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -14,6 +16,9 @@ import org.springframework.web.multipart.MultipartFile;
 public class StudentService {
 
   private final StudentRepository studentRepository;
+
+  @Autowired
+  private PasswordEncoder passwordEncoder;
 
   private static final String UPLOAD_DIR = "src/main/resources/static/profile-pictures/";
 
@@ -26,6 +31,7 @@ public class StudentService {
   }
 
   public Student createStudent(Student student) {
+    student.setPassword(passwordEncoder.encode(student.getPassword()));
     return studentRepository.save(student);
   }
 
@@ -40,6 +46,10 @@ public class StudentService {
           student.setEmail(updatedStudent.getEmail());
           student.setMajor(updatedStudent.getMajor());
           student.setGpa(updatedStudent.getGpa());
+          student.setRole(updatedStudent.getRole());
+          if (updatedStudent.getPassword() != null && !updatedStudent.getPassword().isEmpty()) {
+            student.setPassword(passwordEncoder.encode(updatedStudent.getPassword()));
+          }
           return studentRepository.save(student);
         })
         .orElse(null);

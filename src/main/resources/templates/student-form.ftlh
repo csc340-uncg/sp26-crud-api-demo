@@ -26,6 +26,16 @@
       <li class="nav-item">
         <a class="nav-link" href="#">Third</a>
       </li>
+      <#if Session.SPRING_SECURITY_CONTEXT??>
+        <li class="nav-item">
+          <a class="nav-link" href="/logout">(${Session.SPRING_SECURITY_CONTEXT.authentication.name}) Sign Out</a>
+        </li>
+      </#if>
+      <#if !Session.SPRING_SECURITY_CONTEXT??>
+        <li class="nav-item">
+          <a class="nav-link" href="/login">Sign In</a>
+        </li>
+      </#if>
     </ul>
   </nav>
   <div class="container" style="margin-top: 15px;">
@@ -33,14 +43,20 @@
     <form id="new-student" action="/students/" method="post" enctype="multipart/form-data">
       <input type="text" id="name" name="name" placeholder="Name" />
       <input type="email" id="email" name="email" placeholder="example@domain.edu" />
+      <input type="password" id="password" name="password" placeholder="Password" />
       <input type="text" id="major" name="major" placeholder="Major" />
       <input type="number" id="gpa" name="gpa" step="0.01" placeholder="GPA" />
+      <select id="role" name="role">
+        <option value="USER">USER</option>
+        <option value="MOD">MOD</option>
+      </select>
       <input type="file" id="picture" name="picture" />
       <button type="submit" class="btn btn-primary">Save</button>
       <a href="/students" class="btn btn-outline-danger">Cancel</a>
     </form>
 
   </div>
+ <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 

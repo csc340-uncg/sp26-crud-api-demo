@@ -84,7 +84,7 @@ public class StudentUiController {
     Student student = studentService.updateStudent(id, updatedStudent);
     if (student != null) {
       studentService.saveProfilePicture(student, picture);
-      return "redirect:/students/" + student.getStudentId();
+      return "redirect:/students/" + student.getStudentId()+"?success=true";
     } else {
       return "redirect:/students/update/" + id + "?error=true";
     }

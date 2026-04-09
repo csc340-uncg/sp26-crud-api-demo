@@ -30,6 +30,9 @@ public class Student {
   private String major;
   private double gpa;
   private String profilePicturePath;
+  @Column(nullable = false)
+  private String password;
+  private String role;
 
   public Student(String name, String email, String major, double gpa) {
     this.name = name;

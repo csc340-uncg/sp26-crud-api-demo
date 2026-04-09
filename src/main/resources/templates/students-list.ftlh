@@ -26,6 +26,16 @@
       <li class="nav-item">
         <a class="nav-link" href="#">Third</a>
       </li>
+      <#if Session.SPRING_SECURITY_CONTEXT??>
+        <li class="nav-item">
+          <a class="nav-link" href="/logout">(${Session.SPRING_SECURITY_CONTEXT.authentication.name}) Sign Out</a>
+        </li>
+      </#if>
+      <#if !Session.SPRING_SECURITY_CONTEXT??>
+        <li class="nav-item">
+          <a class="nav-link" href="/login">Sign In</a>
+        </li>
+      </#if>
     </ul>
   </nav>
   <!-- End Nav Bar -->
@@ -41,7 +51,8 @@
       <#list studentsList as student>
         <div class="col">
           <div class="card shadow-sm" style="margin-bottom: 15px;">
-            <img src="/profile-pictures/${(student.profilePicturePath)!'avatar.png'}" class="card-img-top" alt="Profile Picture" style="height: 200px; object-fit: cover;">
+            <img src="/profile-pictures/${(student.profilePicturePath)!'avatar.png'}" class="card-img-top"
+              alt="Profile Picture" style="height: 200px; object-fit: cover;">
             <div class="card-body">
               <h5 class="card-title">${student.name}</h5>
               <a href="/students/major/${student.major}" class="card-link">${student.major}</a>
@@ -73,9 +84,8 @@
     </table>
 
   </div>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
-    crossorigin="anonymous"></script>
+ <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 
 </html>
