@@ -41,7 +41,7 @@
       <h4 class="alert-heading">Uh Oh!</h4>
       <hr>
       <p class="mb-0">Error Status: ${status!""}</p>
-      <p class="mb-0">Message: ${error}!""</p>
+       <p class="mb-0">Message: ${error!""}</p>
     </div>
   </div>
    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
