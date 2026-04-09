@@ -37,6 +37,7 @@ public class StudentUiController {
     } else {
       model.addAttribute("errorMessage", "Student not found");
       model.addAttribute("title", "Error");
+      return "error";
     }
     return "student-details";
   }

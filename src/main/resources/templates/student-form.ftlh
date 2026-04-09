@@ -50,6 +50,7 @@
         <option value="USER">USER</option>
         <option value="MOD">MOD</option>
       </select>
+      <label for="picture" class="form-label"> Picture:</label>
       <input type="file" id="picture" name="picture" />
       <button type="submit" class="btn btn-primary">Save</button>
       <a href="/students" class="btn btn-outline-danger">Cancel</a>
