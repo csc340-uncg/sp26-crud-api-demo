@@ -2,6 +2,9 @@
 FROM eclipse-temurin:25-jdk-alpine AS build
 WORKDIR /sp26-crud-api-demo
 COPY . .
+
+RUN chmod +x mvnw
+
 # Use the Maven wrapper included in the project to build
 RUN ./mvnw clean package -DskipTests
 
