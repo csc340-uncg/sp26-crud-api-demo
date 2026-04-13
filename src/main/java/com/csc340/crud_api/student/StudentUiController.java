@@ -1,5 +1,12 @@
 package com.csc340.crud_api.student;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -7,7 +14,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 //@RestController
 @Controller
@@ -42,6 +51,25 @@ public class StudentUiController {
     return "student-details";
   }
 
+  @GetMapping("/image/{id}")
+  @ResponseBody
+  public ResponseEntity<byte[]> streamImage(@PathVariable Long id) {
+    Student student = studentService.getStudentById(id);
+    if (student == null || student.getProfilePicture() == null) {
+      // return a default image if student or picture is missing
+      try {
+        return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG)
+            .body(Files.readAllBytes(Paths.get("src/main/resources/static/profile-pictures/avatar.png")));
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
+    // Return the bytes with the correct Content-Type header
+    return ResponseEntity.ok()
+        .contentType(MediaType.IMAGE_JPEG) // Or fetch type dynamically from DB
+        .body(student.getProfilePicture());
+  }
+
   @GetMapping("/major/{major}")
   public String getStudentsByMajor(@PathVariable String major, Model model) {
     model.addAttribute("studentsList", studentService.getStudentsByMajor(major));
@@ -70,10 +98,12 @@ public class StudentUiController {
   }
 
   @PostMapping("/")
-  public String addStudent(Student student, MultipartFile picture) {
+  public String addStudent(Student student, MultipartFile picture) throws IOException {
+    if (!picture.isEmpty()) {
+      student.setProfilePicture(picture.getBytes());
+    }
     Student newStudent = studentService.createStudent(student);
     if (newStudent != null) {
-      studentService.saveProfilePicture(student, picture);
       return "redirect:/students/" + newStudent.getStudentId();
     } else {
       return "redirect:/students/add?error=true";
@@ -81,11 +111,13 @@ public class StudentUiController {
   }
 
   @PostMapping("/update/{id}")
-  public String updateStudent(@PathVariable Long id, Student updatedStudent, MultipartFile picture) {
+  public String updateStudent(@PathVariable Long id, Student updatedStudent, MultipartFile picture) throws IOException {
     Student student = studentService.updateStudent(id, updatedStudent);
+    if (!picture.isEmpty()) {
+      student.setProfilePicture(picture.getBytes());
+    }
     if (student != null) {
-      studentService.saveProfilePicture(student, picture);
-      return "redirect:/students/" + student.getStudentId()+"?success=true";
+      return "redirect:/students/" + student.getStudentId() + "?success=true";
     } else {
       return "redirect:/students/update/" + id + "?error=true";
     }

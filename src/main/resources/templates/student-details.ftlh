@@ -55,7 +55,7 @@
   </#if>
     <div class="card">
       <h5 class="card-header">${student.name}</h5>
-      <img src="/profile-pictures/${(student.profilePicturePath)!'avatar.png'}" class="card-img-top"
+      <img src="/students/image/${student.studentId?c}"
         style="height: 100px; width: 100px;" alt="profile picture">
       <div class="card-body">
         <h5 class="card-title">ID: ${student.studentId?c}</h5>

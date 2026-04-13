@@ -1,18 +1,12 @@
 package com.csc340.crud_api.student;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class StudentService {
@@ -21,9 +15,6 @@ public class StudentService {
 
   @Autowired
   private PasswordEncoder passwordEncoder;
-
-  @Value("${upload.dir}")
-  private String UPLOAD_DIR;
 
   public StudentService(StudentRepository studentRepository) {
     this.studentRepository = studentRepository;
@@ -59,10 +50,6 @@ public class StudentService {
   }
 
   public void deleteStudent(Long id) {
-    Student student = studentRepository.findById(id).orElse(null);
-    if (student != null) {
-      deleteProfilePicture(student.getProfilePicturePath());
-    }
     studentRepository.deleteById(id);
   }
 
@@ -81,56 +68,4 @@ public class StudentService {
   public Student getStudentByEmail(String email) {
     return studentRepository.findByEmail(email);
   }
-
-  public void saveProfilePicture(Student student, MultipartFile profilePicture) {
-    if (profilePicture == null || profilePicture.isEmpty())
-      return;
-
-    try {
-      // Path: /app/uploads/profile-pictures/
-      Path rootLocation = Paths.get(UPLOAD_DIR).resolve("profile-pictures");
-      Files.createDirectories(rootLocation);
-
-      String extension = getFileExtension(profilePicture.getOriginalFilename());
-      String fileName = student.getStudentId() + "." + extension;
-
-      // Save file: /app/uploads/profile-pictures/101.jpg
-      try (InputStream is = profilePicture.getInputStream()) {
-        Files.copy(is, rootLocation.resolve(fileName), StandardCopyOption.REPLACE_EXISTING);
-      }
-
-      // Store only "101.jpg" in the DB
-      student.setProfilePicturePath(fileName);
-      studentRepository.save(student);
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-  }
-
-  private String getFileExtension(String fileName) {
-    return fileName.substring(fileName.lastIndexOf(".") + 1);
-  }
-
-  public void deleteProfilePicture(String fileName) {
-    if (fileName == null || fileName.isEmpty() || fileName.equals("avatar.png")) {
-      return; // Don't try to delete the default avatar or empty paths
-    }
-
-    try {
-      // Path: /app/uploads/profile-pictures/5.jpg
-      Path filePath = Paths.get(UPLOAD_DIR)
-          .resolve("profile-pictures")
-          .resolve(fileName);
-
-      // Delete the file only if it exists
-      boolean deleted = Files.deleteIfExists(filePath);
-
-      if (deleted) {
-        System.out.println("Successfully deleted: " + fileName);
-      }
-    } catch (IOException e) {
-      System.err.println("Could not delete file: " + fileName + ". Error: " + e.getMessage());
-    }
-  }
-
 }

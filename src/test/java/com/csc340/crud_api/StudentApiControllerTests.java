@@ -44,7 +44,7 @@ public class StudentApiControllerTests {
 
     @BeforeEach
     public void setUp() {
-        student1 = new Student(1L, "Alice Smith", "alice@school.edu", "CSC", 3.8, "/avatar.png", "test", "test");
+        student1 = new Student( "Alice Smith", "alice@school.edu", "CSC", 3.8);
         student2 = new Student("Bob Johnson", "bob@school.edu", "MAT", 3.5);
         student3 = new Student("Charlie Brown", "charlie@school.edu", "CSC", 3.2);
     }

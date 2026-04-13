@@ -1,10 +1,13 @@
 package com.csc340.crud_api.student;
 
+import org.hibernate.annotations.JdbcTypeCode;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -29,7 +32,12 @@ public class Student {
 
   private String major;
   private double gpa;
-  private String profilePicturePath;
+
+  @Lob
+  @JdbcTypeCode(java.sql.Types.BINARY)
+  @Column(columnDefinition = "bytea")
+  private byte[] profilePicture;
+
   @Column(nullable = false)
   private String password;
   private String role;
