@@ -33,7 +33,7 @@ public class SecurityConfig {
             .permitAll()
             .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
             .requestMatchers("/static/**", "/css/**", "/profile-pictures/**", "/*.jpg", "/*.png", "/*.gif").permitAll()
-            .requestMatchers("/", "/students", "/students/", "/home", "/students/add").permitAll()
+            .requestMatchers("/", "/students", "/students/", "/home","/students/image/**", "/students/add").permitAll()
             .requestMatchers("/students/delete/**", "/students/update/**").hasAuthority("MOD")
             .anyRequest().authenticated())
         .formLogin(Customizer.withDefaults())
