@@ -8,6 +8,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
 
+import com.csc340.crud_api.student.Student;
+import com.csc340.crud_api.student.StudentRepository;
+
 @DataJpaTest
 public class StudentRepositoryTests {
   @Autowired

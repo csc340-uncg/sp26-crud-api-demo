@@ -1,4 +1,4 @@
-package com.csc340.crud_api;
+package com.csc340.crud_api.student;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

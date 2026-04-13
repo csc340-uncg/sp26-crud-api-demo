@@ -14,6 +14,10 @@ import static org.mockito.Mockito.verify;
 
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import com.csc340.crud_api.student.Student;
+import com.csc340.crud_api.student.StudentRepository;
+import com.csc340.crud_api.student.StudentService;
+
 @ExtendWith(MockitoExtension.class)
 public class StudentServiceTests {
 

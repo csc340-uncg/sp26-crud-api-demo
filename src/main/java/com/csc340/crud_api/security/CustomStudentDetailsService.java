@@ -9,8 +9,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.csc340.crud_api.Student;
-import com.csc340.crud_api.StudentRepository;
+import com.csc340.crud_api.student.Student;
+import com.csc340.crud_api.student.StudentRepository;
 
 @Service
 public class CustomStudentDetailsService implements UserDetailsService {
