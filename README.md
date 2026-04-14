@@ -1,7 +1,5 @@
 # Student CRUD MVC Application - primed for deployment using Docker
 
-## This should be the last thing that you add to your project, after everything is working (all your endpoints and views).
-
 ## Notes:
 This version of the project is primed for deploying using a Docker container.
 
