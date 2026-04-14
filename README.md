@@ -1,25 +1,41 @@
-# Student CRUD MVC Application - with Spring Security
+# Student CRUD MVC Application - primed for deployment using Docker
 
 ## This should be the last thing that you add to your project, after everything is working (all your endpoints and views).
 
 ## Notes:
-- This repository includes a dependency to [Spring Security](https://github.com/csc340-uncg/sp26-crud-api-demo/blob/9ce695ecd9e2b1a72cf84f4ea2429ef37d02c390/pom.xml#L46). This is how it handles authentication and authorization.
-     - When you start at Spring Initializr and add a dependency to Spring Security, this will also add a FreeMarker dependency for Security as well.
-     - The rest of the dependencies should already look familiar: Spring Web, FreeMarker, JPA, MySQL.
-     - Remember to have your database up and running before you build your project. Double check that your application properties call for a database that you have in Neon.
-- Once the security dependency is included, Security must be configured. The following are the elements needed for that:
-     -   A User service class [CustomStudentDetailsService](https://github.com/csc340-uncg/sp26-crud-api-demo/blob/9ce695ecd9e2b1a72cf84f4ea2429ef37d02c390/src/main/java/com/csc340/crud_api/security/CustomStudentDetailsService.java#L16)
-         - It implements UserDetailsService. This will make it possible to use the connection to the database to access our saved users using their usernames and passwords. In the Student repo, we implement a method for finding a student by email.
-         - After fetching the student from the database, we build a "security" User object using the username, password, and authorities. For this setup, we get the authority from their "role" attribute in the database.
+This version of the project is primed for deploying using a Docker container.
 
-  -  A Security configuration class - [Security Config](https://github.com/csc340-uncg/sp26-crud-api-demo/blob/9ce695ecd9e2b1a72cf84f4ea2429ef37d02c390/src/main/java/com/csc340/crud_api/security/SecurityConfig.java#L21)
-      -   Annotated with `@Configuration` and `@EnableWebSecurity`
-      -   A [filter chain](https://github.com/csc340-uncg/sp26-crud-api-demo/blob/9ce695ecd9e2b1a72cf84f4ea2429ef37d02c390/src/main/java/com/csc340/crud_api/security/SecurityConfig.java#L25). This is where the rules for authorization are configured. For this example, all requests that edit or remove a Student are only allowed for people who have the MOD authorization. These are the resources that are explicitly secured.
-      -   Accessing `/home` or `/students` is permitted for anyone even without signing in.
-      -   Any other requests must be authenticated, meaning everyone needs to login before they can do anything on the app.
-      -   There are other rules for authorization [here](https://docs.spring.io/spring-security/reference/servlet/authorization/authorize-http-requests.html#authorize-requests)
-      -   Provide a login configuration. This can either be [default or customized](https://docs.spring.io/spring-security/reference/servlet/authentication/passwords/form.html#servlet-authentication-form-custom).
-      -   Add an [exception handler](https://docs.spring.io/spring-security/reference/servlet/authentication/passwords/form.html). If a request is not authorized based on the rules defined above, the app will send a GET request to /403. You can customize this whatever you want but you MUST have the endpoint mapped in some controller.
-      -   Logout is also permitted for everyone.
-      -   Configure an authentication manager. We are using the BCryptPasswordEncoder from Spring Security, and the previously mentioned CustomStudentDetailsService to enforce the above rules for any user who logs in.
-      -   Note that when we create Students ([StudentService ](https://github.com/csc340-uncg/sp26-crud-api-demo/blob/9ce695ecd9e2b1a72cf84f4ea2429ef37d02c390/src/main/java/com/csc340/crud_api/StudentService.java#L34)), we employ this same password encoder, that way passwords are never stored in plain text. However, we need to create the [Bean](https://github.com/csc340-uncg/sp26-crud-api-demo/blob/9ce695ecd9e2b1a72cf84f4ea2429ef37d02c390/src/main/java/com/csc340/crud_api/security/SecurityConfig.java#L54) in SecurityConfig before we can Autowire it in the Service. Very straight forward, I know.
+### Setup Instructions:
+
+#### Local Setup:
+- Make sure you have Docker installed on your machine. You can download it from the official Docker website: https://www.docker.com/get-started
+- Clone the project repository to your local machine if you haven't already.
+- Navigate to the project directory in your terminal.
+- Add a .env file to your project root with the following content:
+```
+DATABASE_URL=YOUR_NEON_DATABASE_URL
+```
+- Make sure to replace `YOUR_NEON_DATABASE_URL` with the actual connection string for your Neon database. This allows the application to connect to the database when running as it will read the `DATABASE_URL` environment variable at runtime.`
+- Ensure that your application is working correctly by running it locally and testing all the endpoints and views. This is important to do before building the Docker image, as it will help you identify any issues that need to be fixed before deployment.
+
+#### Docker Setup:
+- The `Dockerfile` is used to build a Docker image of the application, which can then be run as a container. This allows you to deploy the application in a consistent environment, regardless of where it's run (e.g., on your local machine, on a server, or in the cloud), since the container includes all the necessary dependencies and configurations.
+- Stage 1 of the `Dockerfile` uses a lightweight OpenJDK image to build the application using Maven. It copies the source code and the `pom.xml` file into the container, runs `mvn clean package` to build the application, and produces a JAR file.
+- Stage 2 of the `Dockerfile` uses another OpenJDK image to run the application. It copies the JAR file from the first stage into the second stage and sets the entry point to run the JAR file when the container starts.
+- Use Docker to build and run the application.
+     - To build the Docker image, you would run a command like
+     ```
+     docker build -t sp26-crud-api-demo .
+     ```
+     in the terminal. This command tells Docker to build an image with the tag `sp26-crud-api-demo` using the `Dockerfile` in the current directory (indicated by the `.`).
+     - To run the Docker container, you would use a command like
+     ```
+     docker run -p 8080:8080 --env-file .env sp26-crud-api-demo
+     ```
+     which maps port 8080 of the container to port 8080 on your local machine and passes the environment variables from the `.env` file to the container.
+     - This allows you to access the application at `http://localhost:8080` in your web browser.
+
+#### Deployment to Hosting Platform:
+- On a hosting platform such as Heroku or Render, you would typically push your code to a Git repository, connect that repository to the hosting platform, and configure the platform to build and run the Docker container based on your `Dockerfile`.
+- The hosting platform will handle the deployment process, including building the Docker image and running the container in their environment.
+- You will also need to set the `DATABASE_URL` environment variable in the hosting platform's configuration settings, so that the application can connect to the Neon database when running in the cloud.
