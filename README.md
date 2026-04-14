@@ -11,7 +11,7 @@ This version of the project is primed for deploying using a Docker container.
 - Navigate to the project directory in your terminal.
 - Add a .env file to your project root with the following content:
 ```
-DATABASE_URL=YOUR_NEON_DATABASE_URL
+SPRING_DATASOURCE_URL=YOUR_NEON_DATABASE_URL
 ```
 - Make sure to replace `YOUR_NEON_DATABASE_URL` with the actual connection string for your Neon database. This allows the application to connect to the database when running as it will read the `DATABASE_URL` environment variable at runtime.`
 - Ensure that your application is working correctly by running it locally and testing all the endpoints and views. This is important to do before building the Docker image, as it will help you identify any issues that need to be fixed before deployment.
